@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KUHeS Yaza — Admin</title>
+<meta name="theme-color" content="#0a1f44">
+<link rel="icon" href="kuhes.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+  #app{max-width:900px;padding-bottom:40px;}
+  .admin-shell{display:none;}
+  .login-shell{
+    min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;
+  }
+  .login-card{
+    background:var(--navy-card);border:1px solid var(--border);border-radius:20px;
+    padding:28px;max-width:360px;width:100%;text-align:center;
+  }
+  .login-card img{width:56px;border-radius:12px;margin-bottom:10px;}
+  .login-card h2{margin-bottom:4px;}
+  .login-card p{color:var(--text-muted);margin-top:0;margin-bottom:18px;font-size:.85rem;}
+  .admin-topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid var(--border);}
+  .admin-tabs{display:flex;gap:8px;padding:16px 16px 0;}
+  .admin-panel{padding:16px;}
+  table{width:100%;border-collapse:collapse;font-size:.85rem;}
+  th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--border);}
+  th{color:var(--text-muted);font-weight:600;font-size:.75rem;text-transform:uppercase;letter-spacing:.4px;}
+  td a{color:var(--gold);}
+  .row-actions{display:flex;gap:8px;}
+  .table-wrap{overflow-x:auto;background:var(--navy-card);border:1px solid var(--border);border-radius:14px;}
+  .logout-btn{background:none;border:1px solid var(--border);color:var(--text-muted);border-radius:8px;padding:8px 12px;cursor:pointer;font-size:.8rem;}
+  .admin-form-card{background:var(--navy-card);border:1px solid var(--border);border-radius:14px;padding:16px;}
+  .admin-form-card h3{margin-bottom:12px;font-size:1rem;}
+  .admin-tabs{flex-wrap:wrap;}
+</style>
+</head>
+<body data-theme="dark">
+<div id="app">
+
+  <div class="login-shell" id="loginShell">
+    <div class="login-card">
+      <img src="kuhes.png" alt="KUHeS">
+      <h2>Admin Access</h2>
+      <p>KUHeS Yaza moderation panel</p>
+      <div class="field">
+        <label>Email</label>
+        <input type="text" id="adminEmail" placeholder="admin@otechy.kuhes.ac.mw">
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" id="adminPassword" placeholder="••••••••">
+      </div>
+      <button class="primary-btn" id="loginBtn">Sign in</button>
+      <p id="loginError" style="color:var(--danger);display:none;margin-top:10px;">Incorrect email or password.</p>
+      <p style="margin-top:16px;"><a href="index.html" style="color:var(--text-muted);font-size:.8rem;">&larr; Back to Yaza</a></p>
+    </div>
+  </div>
+
+  <div class="admin-shell" id="adminShell">
+    <header class="admin-topbar">
+      <div class="brand"><img src="kuhes.png"><span>KUHeS <em>Yaza</em> Admin</span></div>
+      <button class="logout-btn" id="logoutBtn">Sign out</button>
+    </header>
+
+    <nav class="admin-tabs">
+      <button class="tab active" data-atab="resources"><svg class="ui-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg> Resources</button>
+      <button class="tab" data-atab="market"><svg class="ui-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg> Marketplace</button>
+      <button class="tab" data-atab="diagnosis"><svg class="ui-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 3v6.5a4.5 4.5 0 0 0 9 0V3"/><path d="M9 3H4.5"/><path d="M13.5 3H9"/><path d="M13.5 9.5V13a5 5 0 0 0 10 0v-1.2"/><circle cx="20.5" cy="8.5" r="2"/></svg> Diagnosis</button>
+      <button class="tab" data-atab="announcements"><svg class="ui-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11v3a1 1 0 0 0 1 1h2l4 5v-15l-4 5H4a1 1 0 0 0-1 1Z"/><path d="M16 8a4 4 0 0 1 0 8"/><path d="M20 5a9 9 0 0 1 0 14"/></svg> Announcements</button>
+      <button class="tab" data-atab="viewers"><svg class="ui-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.1 8.3 22 9.3 17 14.1 18.2 21 12 17.8 5.8 21 7 14.1 2 9.3 8.9 8.3 12 2"/></svg> Viewers</button>
+      <button class="tab" data-atab="reports"><svg class="ui-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1Z"/><line x1="4" y1="22" x2="4" y2="15"/></svg> Reports</button>
+    </nav>
+
+    <section class="admin-panel" id="resourcesPanel">
+      <div class="search-row" style="margin:0 0 12px;">
+        <input type="text" id="adminResSearch" placeholder="Search resources...">
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Title</th><th>Programme</th><th>Year</th><th>Type</th><th>Category</th><th>Views</th><th>DB</th><th>Link</th><th>Actions</th></tr></thead>
+          <tbody id="resTableBody"><tr><td colspan="9">Loading…</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="admin-panel hidden" id="marketPanelAdmin">
+      <div class="search-row" style="margin:0 0 12px;">
+        <input type="text" id="adminMarketSearch" placeholder="Search listings...">
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Title</th><th>Price</th><th>Category</th><th>Seller</th><th>Contact</th><th>Views</th><th>Actions</th></tr></thead>
+          <tbody id="marketTableBody"><tr><td colspan="7">Loading…</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="admin-panel hidden" id="diagnosisPanelAdmin">
+      <div class="admin-form-card">
+        <h3>Add a disease</h3>
+        <div class="field">
+          <label>Disease / condition name</label>
+          <input type="text" id="diagName" placeholder="e.g. Malaria">
+        </div>
+        <div class="field">
+          <label>Programme (optional)</label>
+          <select id="diagProgramme">
+            <option value="">All programmes</option>
+            <option>Medicine (MBBS)</option>
+            <option>Nursing &amp; Midwifery</option>
+            <option>Pharmacy</option>
+            <option>Physiotherapy</option>
+            <option>Biomedical Sciences / Laboratory Sciences</option>
+            <option>Public Health / Environmental Health</option>
+            <option>Nutrition &amp; Dietetics</option>
+            <option>Clinical Medicine</option>
+            <option>Radiography</option>
+            <option>Optometry</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Signs &amp; symptoms (comma separated)</label>
+          <input type="text" id="diagSigns" placeholder="e.g. fever, chills, headache, joint pain">
+        </div>
+        <button class="primary-btn" id="diagAddBtn">Add disease</button>
+      </div>
+      <div class="search-row" style="margin:16px 0 12px;">
+        <input type="text" id="adminDiagSearch" placeholder="Search diseases...">
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Name</th><th>Programme</th><th>Signs &amp; Symptoms</th><th>Actions</th></tr></thead>
+          <tbody id="diagTableBody"><tr><td colspan="4">Loading…</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="admin-panel hidden" id="announcePanelAdmin">
+      <div class="admin-form-card">
+        <h3>Post an announcement</h3>
+        <div class="field">
+          <label>Title</label>
+          <input type="text" id="annTitle" placeholder="e.g. Clinical placement schedule released">
+        </div>
+        <div class="field">
+          <label>Message</label>
+          <input type="text" id="annBody" placeholder="Details for students to see">
+        </div>
+        <div class="field">
+          <label>Programme this concerns</label>
+          <select id="annProgramme">
+            <option value="All Programmes">All Programmes</option>
+            <option>Medicine (MBBS)</option>
+            <option>Nursing &amp; Midwifery</option>
+            <option>Pharmacy</option>
+            <option>Physiotherapy</option>
+            <option>Biomedical Sciences / Laboratory Sciences</option>
+            <option>Public Health / Environmental Health</option>
+            <option>Nutrition &amp; Dietetics</option>
+            <option>Clinical Medicine</option>
+            <option>Radiography</option>
+            <option>Optometry</option>
+          </select>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>Show from</label>
+            <input type="datetime-local" id="annStart">
+          </div>
+          <div class="field">
+            <label>Expires</label>
+            <input type="datetime-local" id="annExpire">
+          </div>
+        </div>
+        <button class="primary-btn" id="annAddBtn">Post announcement</button>
+      </div>
+      <div class="table-wrap" style="margin-top:16px;">
+        <table>
+          <thead><tr><th>Title</th><th>Programme</th><th>Show from</th><th>Expires</th><th>Actions</th></tr></thead>
+          <tbody id="annTableBody"><tr><td colspan="5">Loading…</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="admin-panel hidden" id="viewersPanelAdmin">
+      <p class="muted-text" style="margin:0 0 12px;">Viewers add themselves from the app's About section — admin can only remove entries here, not add them.</p>
+      <div class="search-row" style="margin:0 0 12px;">
+        <input type="text" id="adminViewerSearch" placeholder="Search viewers...">
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Photo</th><th>Name</th><th>Added</th><th>Actions</th></tr></thead>
+          <tbody id="viewerTableBody"><tr><td colspan="4">Loading…</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="admin-panel hidden" id="reportsPanelAdmin">
+      <p class="muted-text" style="margin:0 0 12px;">Reports students send in from the Report button on resources and marketplace listings. Dismiss once handled.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Item</th><th>Type</th><th>Reason</th><th>Reported</th><th>Actions</th></tr></thead>
+          <tbody id="reportTableBody"><tr><td colspan="5">Loading…</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <div id="toast" class="toast"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="icons.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>

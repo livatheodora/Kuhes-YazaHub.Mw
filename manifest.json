@@ -1,0 +1,29 @@
+{
+  "short_name": "KUHeS Yaza",
+  "name": "KUHeS Yaza — Resource Sharing Hub",
+  "icons": [
+    { "src": "kuhes.png", "type": "image/png", "sizes": "192x192" },
+    { "src": "kuhes.png", "type": "image/png", "sizes": "512x512" }
+  ],
+  "start_url": "/index.html",
+  "scope": "/",
+  "background_color": "#0a1f44",
+  "theme_color": "#0a1f44",
+  "display": "standalone",
+  "orientation": "portrait",
+  "file_handlers": [
+    {
+      "action": "/index.html?handler=open-file",
+      "name": "KUHeS Yaza document viewer",
+      "icons": [
+        { "src": "kuhes.png", "sizes": "192x192", "type": "image/png" }
+      ],
+      "accept": {
+        "application/pdf": [".pdf"],
+        "application/vnd.openxmlformats-officedocument.presentationml.presentation": [".pptx"],
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [".docx"]
+      }
+    }
+  ],
+  "launch_handler": { "client_mode": "focus-existing" }
+}

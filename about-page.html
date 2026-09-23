@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>About Otechy — KUHeS Yaza</title>
+<meta name="theme-color" content="#0a1f44">
+<link rel="icon" href="kuhes.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+.page-topbar{
+  display:flex;align-items:center;gap:12px;padding:14px 18px;
+  position:sticky;top:0;z-index:20;
+  background:color-mix(in srgb, var(--navy-deep) 88%, transparent);
+  backdrop-filter:blur(10px);border-bottom:1px solid var(--border);
+}
+.back-btn{
+  width:38px;height:38px;border-radius:10px;border:1px solid var(--border);
+  background:var(--navy-card);color:var(--text);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;
+}
+.back-btn:hover{border-color:var(--gold);}
+.page-title{font-family:var(--font-display);font-weight:700;font-size:1.05rem;flex:1;}
+.page-title em{color:var(--gold);font-style:normal;}
+
+.page-container{padding:16px;max-width:720px;margin:0 auto;padding-bottom:40px;}
+
+/* Hero banner */
+.about-hero{
+  background:linear-gradient(135deg,#0e1f42 0%,#1c3b73 60%,#0e2856 100%);
+  border:1px solid var(--border);border-radius:20px;
+  padding:24px 20px;margin-bottom:20px;
+  text-align:center;position:relative;overflow:hidden;
+}
+.about-hero::before{
+  content:'O';position:absolute;font-family:var(--font-display);font-size:14rem;font-weight:800;
+  right:-20px;top:-40px;color:rgba(255,255,255,.025);line-height:1;pointer-events:none;
+}
+.about-hero img{width:112px;height:112px;border-radius:24px;box-shadow:0 10px 30px rgba(0,0,0,.45);margin-bottom:14px;}
+.about-hero h1{font-size:1.4rem;color:var(--text);margin-bottom:4px;}
+.about-hero h1 em{color:var(--gold);font-style:normal;}
+.about-hero p{font-size:.85rem;color:var(--text-muted);max-width:340px;margin:0 auto;line-height:1.5;}
+
+.about-section-title{
+  font-family:var(--font-display);font-size:1rem;font-weight:700;
+  color:var(--text);margin:20px 0 12px;display:flex;align-items:center;gap:8px;
+}
+.about-section-title::after{content:'';flex:1;height:1px;background:var(--border);}
+
+.about-intro{
+  font-size:.87rem;color:var(--text-muted);line-height:1.65;
+  background:var(--navy-card);border:1px solid var(--border);border-radius:14px;
+  padding:14px 16px;margin-bottom:12px;
+}
+
+/* Team carousel — light "spotlight" cards (photo + name overlay + pink accents) */
+.team-carousel{position:relative;border-radius:22px;overflow:hidden;}
+.team-track{display:flex;transition:transform .5s ease;}
+.team-slide{width:100%;min-width:100%;max-width:100%;flex-shrink:0;box-sizing:border-box;}
+.carousel-nav-group{
+  position:absolute;top:191px;right:14px;z-index:6;
+  display:flex;gap:8px;
+}
+.carousel-nav{
+  width:38px;height:38px;border-radius:50%;
+  background:#fff;border:none;color:#2a2a35;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+  font-size:1.2rem;line-height:1;padding:0;
+  box-shadow:0 6px 16px rgba(10,20,45,.35);
+  transition:transform .12s ease;
+}
+.carousel-nav:hover{transform:translateY(-1px);}
+.carousel-dots{display:flex;justify-content:center;gap:6px;margin:10px 0 4px;}
+.carousel-dot{width:7px;height:7px;border-radius:50%;background:var(--border);cursor:pointer;transition:background .15s,width .15s;border:none;padding:0;}
+.carousel-dot.active{background:var(--gold);width:18px;border-radius:4px;}
+
+/* Team cards */
+.team-list{display:flex;flex-direction:column;gap:18px;}
+.team-card{
+  display:flex;flex-direction:column;align-items:stretch;
+  background:#ffffff;border:none;border-radius:22px;padding:0;
+  overflow:hidden;box-shadow:0 14px 34px rgba(10,20,45,.4);
+}
+.team-avatar{
+  width:100%;height:210px;border-radius:0;overflow:hidden;flex-shrink:0;
+  background:linear-gradient(135deg,var(--gold),var(--gold-deep));
+  display:flex;align-items:center;justify-content:center;position:relative;
+}
+.team-avatar img{width:100%;height:100%;object-fit:cover;object-position:top center;position:absolute;inset:0;}
+.avatar-fallback{
+  font-family:var(--font-display);font-weight:800;font-size:2.6rem;color:#20140a;
+  position:relative;z-index:1;display:none;
+}
+.team-name-overlay{
+  position:absolute;left:0;right:0;bottom:0;z-index:2;
+  padding:26px 18px 12px;
+  background:linear-gradient(to top, rgba(255,255,255,.94) 0%, rgba(255,255,255,.65) 55%, rgba(255,255,255,0) 100%);
+}
+.team-name-overlay h4{
+  font-family:var(--font-display);font-size:1.15rem;font-weight:800;
+  color:#e0218a;margin:0;
+}
+.team-info{padding:14px 20px 20px;background:#fff;}
+.team-role{
+  font-size:.72rem;color:#e0218a;font-weight:800;letter-spacing:.04em;
+  text-transform:uppercase;display:block;margin-bottom:8px;
+}
+.team-info p{font-size:.84rem;color:#5b6472;margin:0 0 14px;line-height:1.55;}
+.team-tags{display:flex;flex-wrap:wrap;gap:8px;}
+.team-tag{
+  display:inline-flex;align-items:center;gap:4px;
+  background:#ffe3f2;color:#e0218a;font-size:.72rem;font-weight:700;
+  padding:6px 13px;border-radius:20px;
+}
+
+/* Viewer add-yourself */
+.viewer-card .team-avatar{width:100%;height:220px;border-radius:0;}
+.viewer-form-card{
+  background:var(--navy-card);border:1px dashed var(--border);border-radius:16px;padding:16px;
+  margin-top:8px;
+}
+
+/* Contacts */
+.contact-channels{display:flex;flex-direction:column;gap:8px;}
+.channel-row{
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--navy-card);border:1px solid var(--border);border-radius:12px;
+  padding:12px 14px;text-decoration:none;color:var(--text);
+  transition:border-color .15s ease;
+}
+.channel-row:hover{border-color:var(--gold);}
+.channel-label{font-size:.82rem;color:var(--text-muted);}
+.channel-value{font-size:.82rem;font-weight:600;color:var(--gold);}
+
+/* Add-viewer form */
+.pick-tile{
+  width:100%;display:flex;align-items:center;gap:14px;
+  background:var(--navy-card);border:1px solid var(--border);border-radius:14px;
+  padding:14px;cursor:pointer;text-align:left;color:var(--text);
+  transition:border-color .15s ease;margin-top:8px;
+}
+.pick-tile:hover{border-color:var(--gold);}
+.pick-icon{font-size:1.5rem;flex-shrink:0;}
+.pick-tile strong{display:block;font-weight:600;font-size:.88rem;margin-bottom:2px;}
+.pick-tile p{font-size:.78rem;color:var(--text-muted);margin:0;}
+
+.drop-zone{
+  background:var(--navy-card-2);border:2px dashed var(--border);border-radius:14px;
+  padding:16px;text-align:center;cursor:pointer;transition:border-color .15s ease;
+  position:relative;overflow:hidden;
+}
+.drop-zone.small{padding:12px;}
+.drop-zone:hover{border-color:var(--gold);}
+.drop-zone p{margin:0;font-size:.82rem;color:var(--text-muted);}
+.drop-zone img{max-height:120px;object-fit:cover;border-radius:10px;width:100%;}
+
+.field{margin-bottom:12px;}
+.field label{display:block;font-size:.78rem;font-weight:600;color:var(--text-muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.4px;}
+.field input{
+  width:100%;background:var(--navy-card-2);border:1.5px solid var(--border);border-radius:12px;
+  padding:12px 14px;color:var(--text);font-size:.9rem;font-family:var(--font-body);outline:none;
+  transition:border-color .15s ease;
+}
+.field input:focus{border-color:var(--gold);}
+
+.primary-btn{
+  width:100%;background:linear-gradient(135deg,var(--gold),var(--gold-deep));
+  color:#20140a;border:none;border-radius:14px;padding:14px;
+  font-weight:700;font-size:.95rem;cursor:pointer;
+  transition:filter .15s ease;margin-top:4px;
+}
+.primary-btn:hover{filter:brightness(1.06);}
+.primary-btn:disabled{opacity:.5;cursor:not-allowed;}
+</style>
+</head>
+<body data-theme="dark">
+<div id="app">
+
+  <!-- Top bar -->
+  <header class="page-topbar">
+    <button class="back-btn" id="backBtn" aria-label="Back">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    </button>
+    <div class="page-title">ℹ️ <em>About</em> Otechy</div>
+    <button class="icon-btn" id="themeToggle" aria-label="Toggle theme">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+  </header>
+
+  <div class="page-container">
+
+    <!-- Hero -->
+    <div class="about-hero">
+      <img src="lion.webp" alt="OTECHY">
+      <h1>Otechy <em>Ltd</em></h1>
+      <p>Innovative Malawian technology — digitalising Malawi through open-source and free digital resources.</p>
+    </div>
+
+    <!-- Mission -->
+    <p class="about-intro">Otechy is an innovative Malawian technology enterprise founded in 2025 by a visionary group of student entrepreneurs during their post-MSCE academic holiday. Spurred by a collective mission to digitalize Malawi through the strategic leveraging of open-source and free digital resources, the team conceptualized and executed a high-utility software ecosystem.</p>
+
+    <p class="about-intro">Beyond engineering platforms like ScoraHub and the KUHeS Yaza Hub, Otechy operates as a beacon of youth empowerment — a living proof of concept to young Malawians nationwide that structural focus and technical dedication can yield world-class technological solutions with zero initial capital.</p>
+
+    <!-- Team -->
+    <h4 class="about-section-title">👥 Executive Leadership Team</h4>
+    <div class="team-carousel" id="teamCarousel">
+      <div class="team-track" id="teamTrack">
+
+        <div class="team-slide">
+          <div class="team-card">
+            <div class="team-avatar">
+              <img src="peter.webp" alt="Peter Mlandula" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+              <span class="avatar-fallback"></span>
+              <div class="team-name-overlay"><h4>Peter Mlandula</h4></div>
+            </div>
+            <div class="team-info">
+              <span class="team-role">Chief Executive Officer (CEO) &amp; Lead Architect</span>
+              <p>The primary engineering mind behind the platform's core infrastructure. Peter spearheaded the development phase, maintaining strategic vision and team cohesion during the critical, non-revenue-generating initial months of the platform's deployment.</p>
+              <div class="team-tags">
+                <span class="team-tag">🚀 Architecture</span>
+                <span class="team-tag">🧭 Strategy</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="team-slide">
+          <div class="team-card">
+            <div class="team-avatar">
+              <img src="elisha.jpg" alt="Elisha Mkango" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+              <span class="avatar-fallback"></span>
+              <div class="team-name-overlay"><h4>Elisha Mkango</h4></div>
+            </div>
+            <div class="team-info">
+              <span class="team-role">Core Backend Engineer &amp; Quality Assurance (QA) Software Tester</span>
+              <p>Managed server-side logic and database architecture during the company's most technically demanding developmental phases, ensuring system scalability and integrity.</p>
+              <div class="team-tags">
+                <span class="team-tag">🛠️ Backend</span>
+                <span class="team-tag">✅ QA</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="team-slide">
+          <div class="team-card">
+            <div class="team-avatar">
+              <img src="theo.jpg" alt="Theodora Liva" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+              <span class="avatar-fallback"></span>
+              <div class="team-name-overlay"><h4>Theodora Liva</h4></div>
+            </div>
+            <div class="team-info">
+              <span class="team-role">Chief Financial Officer (CFO) &amp; Acting Marketing Director</span>
+              <p>Manages corporate fiscal allocation while concurrently leading outreach campaigns, corporate partnerships, and brand placement strategies to put Otechy on the regional tech map.</p>
+              <div class="team-tags">
+                <span class="team-tag">💰 Finance</span>
+                <span class="team-tag">📢 Marketing</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="team-slide">
+          <div class="team-card">
+            <div class="team-avatar">
+              <img src="elijah.jpg" alt="Elijah Mkango" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+              <span class="avatar-fallback"></span>
+              <div class="team-name-overlay"><h4>Elijah Mkango</h4></div>
+            </div>
+            <div class="team-info">
+              <span class="team-role">Chief Information Security Officer (CISO) &amp; Security Manager</span>
+              <p>Oversees network security, identity verification protocols, and platform data privacy to guarantee a secure, threat-free environment for all student users.</p>
+              <div class="team-tags">
+                <span class="team-tag">🔐 Security</span>
+                <span class="team-tag">🛡️ Privacy</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="carousel-nav-group">
+        <button class="carousel-nav" id="teamPrev" aria-label="Previous leader">‹</button>
+        <button class="carousel-nav" id="teamNext" aria-label="Next leader">›</button>
+      </div>
+    </div>
+    <div class="carousel-dots" id="teamDots"></div>
+
+    <!-- Community Viewers -->
+    <h4 class="about-section-title">🌟 Community Viewers</h4>
+    <p style="font-size:.82rem;color:var(--text-muted);margin-bottom:12px;">Students and supporters who've asked to be featured here.</p>
+    <a href="viewers-page.html" class="pick-tile" id="viewersPreviewTile" style="text-decoration:none;">
+      <span class="pick-icon">🌟</span>
+      <div><strong id="viewersPreviewCount">See community viewers</strong><p>Tap to view everyone featured, or add yourself</p></div>
+    </a>
+
+    <!-- Contacts -->
+    <h4 class="about-section-title">📞 Corporate Communications</h4>
+    <div class="contact-channels">
+      <a href="mailto:otechy8@gmail.com" class="channel-row">
+        <span class="channel-label">📧 Primary Email</span>
+        <span class="channel-value">otechy8@gmail.com</span>
+      </a>
+      <a href="https://otechy.tiiny.site" target="_blank" class="channel-row">
+        <span class="channel-label">🌐 Official Website</span>
+        <span class="channel-value">otechy.tiiny.site</span>
+      </a>
+      <a href="tel:+265989687848" class="channel-row">
+        <span class="channel-label">📞 Telephony Line 1</span>
+        <span class="channel-value">+265 989 68 78 48</span>
+      </a>
+      <a href="tel:+265891846424" class="channel-row">
+        <span class="channel-label">📞 Telephony Line 2</span>
+        <span class="channel-value">+265 891 84 64 24</span>
+      </a>
+    </div>
+
+  </div>
+
+  <div id="toast" class="toast"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script>
+const sbMarket = window.supabase.createClient(
+  "https://axoaujikwxgeodpmwjid.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF4b2F1amlrd3hnZW9kcG13amlkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ5MzA1NTAsImV4cCI6MjEwMDUwNjU1MH0.fiJNgBWmL23J3MtFgNbpWhJxB1PqdkkHDyGr2lD_seI"
+);
+const VIEWER_BUCKET = "viewer-photos";
+
+const $ = sel => document.querySelector(sel);
+function showToast(msg,type="success"){const t=$('#toast');t.textContent=msg;t.className='toast '+type;t.style.display='block';clearTimeout(showToast._t);showToast._t=setTimeout(()=>t.style.display='none',3200);}
+function escapeHTML(str){const d=document.createElement('div');d.textContent=str??'';return d.innerHTML;}
+
+// Theme
+const themeToggle=$('#themeToggle');
+function applyTheme(t){document.body.setAttribute('data-theme',t);localStorage.setItem('yaza-theme',t);}
+applyTheme(localStorage.getItem('yaza-theme')||'dark');
+themeToggle.addEventListener('click',()=>applyTheme(document.body.getAttribute('data-theme')==='dark'?'light':'dark'));
+
+// Back
+$('#backBtn').addEventListener('click',()=>history.length>1?history.back():window.location.href='index.html');
+
+// Viewers — just show a count here; the full list lives on viewers-page.html
+async function fetchViewerCount(){
+  const el=$('#viewersPreviewCount'); if(!el) return;
+  const {count,error}=await sbMarket.from('viewers').select('*',{count:'exact',head:true});
+  if(error||!count){ el.textContent='See community viewers'; return; }
+  el.textContent=`See ${count} community viewer${count===1?'':'s'}`;
+}
+fetchViewerCount();
+
+// Leadership team carousel — auto-advances every 10s, Prev/Next + dots override the timer
+(function(){
+  const track=$('#teamTrack');
+  const slides=track?Array.from(track.children):[];
+  const dotsWrap=$('#teamDots');
+  if(!track||!slides.length||!dotsWrap) return;
+  let idx=0, timer=null;
+
+  slides.forEach((_,i)=>{
+    const d=document.createElement('button');
+    d.type='button';
+    d.className='carousel-dot'+(i===0?' active':'');
+    d.setAttribute('aria-label','Go to leader '+(i+1));
+    d.addEventListener('click',()=>goTo(i));
+    dotsWrap.appendChild(d);
+  });
+
+  function render(){
+    track.style.transform=`translateX(-${idx*100}%)`;
+    Array.from(dotsWrap.children).forEach((d,i)=>d.classList.toggle('active',i===idx));
+  }
+  function goTo(i){ idx=(i+slides.length)%slides.length; render(); restart(); }
+  function next(){ goTo(idx+1); }
+  function prev(){ goTo(idx-1); }
+  function restart(){ clearInterval(timer); timer=setInterval(next,10000); }
+
+  $('#teamNext').addEventListener('click',next);
+  $('#teamPrev').addEventListener('click',prev);
+  render();
+  restart();
+})();
+</script>
+</body>
+</html>

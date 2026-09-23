@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Stream — KUHeS Yaza</title>
+<meta name="theme-color" content="#0a1f44">
+<link rel="icon" href="kuhes.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+.page-topbar{
+  display:flex;align-items:center;gap:12px;padding:14px 18px;
+  position:sticky;top:0;z-index:20;
+  background:color-mix(in srgb, var(--navy-deep) 88%, transparent);
+  backdrop-filter:blur(10px);border-bottom:1px solid var(--border);
+}
+.back-btn{
+  width:38px;height:38px;border-radius:10px;border:1px solid var(--border);
+  background:var(--navy-card);color:var(--text);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;
+}
+.back-btn:hover{border-color:var(--gold);}
+.page-title{font-family:var(--font-display);font-weight:700;font-size:1.05rem;flex:1;}
+.page-title em{color:var(--gold);font-style:normal;}
+.page-container{padding:16px;max-width:720px;margin:0 auto;padding-bottom:40px;}
+
+.stream-actions{display:flex;gap:10px;margin:14px 0;}
+.stream-action-btn{
+  flex:1;display:flex;align-items:center;justify-content:center;gap:8px;
+  background:var(--navy-card);border:1px solid var(--border);border-radius:12px;
+  padding:12px;color:var(--text);text-decoration:none;font-size:.82rem;font-weight:600;
+  cursor:pointer;transition:border-color .15s ease;
+}
+.stream-action-btn:hover{border-color:var(--gold);}
+
+.stream-grid{margin-top:14px;}
+.stream-video-thumb-inner{position:relative;width:100%;height:100%;cursor:pointer;}
+.stream-play-badge{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:2;
+  width:32px;height:32px;border-radius:50%;
+  background:rgba(10,20,40,.65);color:#fff;display:flex;align-items:center;justify-content:center;
+  border:2px solid rgba(255,255,255,.85);
+}
+.mini-audio{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:0 12px 12px;row-gap:6px;}
+.mini-audio-play{
+  width:28px;height:28px;border-radius:50%;flex-shrink:0;border:none;cursor:pointer;
+  background:linear-gradient(135deg,var(--gold),var(--gold-deep));color:#20140a;
+  display:flex;align-items:center;justify-content:center;
+}
+.mini-audio-track{flex:1;height:4px;border-radius:2px;background:var(--overlay-2);position:relative;overflow:hidden;min-width:24px;}
+.mini-audio-fill{position:absolute;left:0;top:0;bottom:0;width:0%;background:var(--gold);border-radius:2px;}
+.mini-audio-time{font-size:.6rem;color:var(--text-muted);font-family:var(--font-mono);flex-shrink:0;}
+
+.video-modal-body{position:relative;width:100%;aspect-ratio:16/9;background:#000;border-radius:12px;overflow:hidden;}
+.video-modal-body iframe{width:100%;height:100%;border:none;}
+</style>
+</head>
+<body data-theme="dark">
+<div id="app">
+
+  <!-- Top bar -->
+  <header class="page-topbar">
+    <button class="back-btn" id="backBtn" aria-label="Back">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    </button>
+    <div class="page-title">🎬 <em>Stream</em></div>
+    <button class="icon-btn" id="themeToggle" aria-label="Toggle theme">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+  </header>
+
+  <div class="page-container">
+
+    <div class="tip-box">
+      <span class="tip-eyebrow">Kasty Stream, KUHeS style</span>
+      <span>Lecture videos and recorded audio, all in one feed — free, no account needed.</span>
+    </div>
+
+    <div class="stream-actions">
+      <a class="stream-action-btn" href="index.html?upload=youtube">
+        <svg class="ui-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="18" rx="2"/><line x1="7" y1="3" x2="7" y2="21"/><line x1="17" y1="3" x2="17" y2="21"/><line x1="2" y1="9" x2="7" y2="9"/><line x1="2" y1="15" x2="7" y2="15"/><line x1="17" y1="9" x2="22" y2="9"/><line x1="17" y1="15" x2="22" y2="15"/></svg>
+        Add Video
+      </a>
+      <a class="stream-action-btn" href="index.html?upload=audio">
+        <svg class="ui-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+        Add Audio
+      </a>
+    </div>
+
+    <div class="chip-row" id="streamFilterChips">
+      <button class="chip active" data-filter="all">All</button>
+      <button class="chip" data-filter="video">Videos</button>
+      <button class="chip" data-filter="audio">Audio</button>
+    </div>
+
+    <div class="grid stream-grid" id="streamFeed">
+      <div class="skeleton-row"><div class="skeleton-card"></div><div class="skeleton-card"></div></div>
+    </div>
+
+  </div>
+
+  <!-- Video player modal -->
+  <div class="modal-overlay hidden" id="videoModal">
+    <div class="modal">
+      <div class="modal-head"><h3 id="videoModalTitle">Video</h3><button class="close-btn" data-close>&times;</button></div>
+      <div class="modal-body">
+        <div class="video-modal-body" id="videoModalBody"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="icons.js"></script>
+<script>
+// Same two resource projects app.js reads from — DB1 (primary) + DB2 (overflow).
+const sbResA = window.supabase.createClient(
+  "https://crhgdlfgsdtxjcrqpceo.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNyaGdkbGZnc2R0eGpjcnFwY2VvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ5MzEzNTcsImV4cCI6MjEwMDUwNzM1N30.kNbDcorCh2d2_aTQbIf_wVd5115xoRY4CWkMkZ9oiZs"
+);
+const sbResB = window.supabase.createClient(
+  "https://ufzhwbalbewmaqcsqdrx.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVmemh3YmFsYmV3bWFxY3NxZHJ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ5MzAxOTUsImV4cCI6MjEwMDUwNjE5NX0.QN7onOSoWWZ9Vwd45cKTdnvdER9VAGeCXuWKIHa2UN8"
+);
+const AUDIO_EXTS = ["mp3","wav","m4a","ogg","aac"];
+
+const $ = sel => document.querySelector(sel);
+const $$ = sel => Array.from(document.querySelectorAll(sel));
+function showToast(msg,type="success"){const t=$('#toast');t.textContent=msg;t.className='toast '+type;t.style.display='block';clearTimeout(showToast._t);showToast._t=setTimeout(()=>t.style.display='none',3200);}
+function escapeHTML(str){const d=document.createElement('div');d.textContent=str??'';return d.innerHTML;}
+function openModal(id){$(id).classList.remove('hidden');}
+function closeModal(id){$(id).classList.add('hidden');}
+$$(".close-btn").forEach(b=>b.addEventListener('click',()=>b.closest('.modal-overlay').classList.add('hidden')));
+$$(".modal-overlay").forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.add('hidden');}));
+
+// Theme
+const themeToggle=$('#themeToggle');
+function applyTheme(t){document.body.setAttribute('data-theme',t);localStorage.setItem('yaza-theme',t);}
+applyTheme(localStorage.getItem('yaza-theme')||'dark');
+themeToggle.addEventListener('click',()=>applyTheme(document.body.getAttribute('data-theme')==='dark'?'light':'dark'));
+
+// Back
+$('#backBtn').addEventListener('click',()=>history.length>1?history.back():window.location.href='index.html');
+
+function youtubeVideoId(url){
+  try{
+    const u=new URL(url);
+    if(u.hostname.includes('youtu.be')) return u.pathname.slice(1);
+    if(u.searchParams.get('v')) return u.searchParams.get('v');
+    const m=u.pathname.match(/\/embed\/([^/?]+)/);
+    return m?m[1]:'';
+  }catch{return '';}
+}
+function youtubeEmbedUrl(url){
+  const id=youtubeVideoId(url);
+  return id?`https://www.youtube.com/embed/${id}?autoplay=1`:'';
+}
+
+let allStreamItems=[];
+let activeFilter='all';
+
+async function fetchStreamItems(){
+  const [a,b]=await Promise.all([
+    sbResA.from('resources').select('*').eq('status','active').order('created_at',{ascending:false}),
+    sbResB.from('resources').select('*').eq('status','active').order('created_at',{ascending:false}),
+  ]);
+  const rows=[...(a.data||[]),...(b.data||[])];
+  allStreamItems=rows.filter(r=>r.type==='youtube' || (r.file_type && AUDIO_EXTS.includes(r.file_type)))
+                      .sort((x,y)=>new Date(y.created_at)-new Date(x.created_at));
+  renderFeed();
+}
+
+function renderFeed(){
+  const feed=$('#streamFeed');
+  const items=allStreamItems.filter(r=>{
+    if(activeFilter==='video') return r.type==='youtube';
+    if(activeFilter==='audio') return r.type!=='youtube';
+    return true;
+  });
+  if(!items.length){
+    feed.innerHTML='<div class="empty-state"><h3>Nothing here yet</h3><p>Be the first to add a video or audio resource.</p></div>';
+    return;
+  }
+  feed.innerHTML=items.map(cardHTML).join('');
+
+  $$('.stream-video-thumb-inner').forEach(el=>{
+    el.addEventListener('click',()=>{
+      const id=el.dataset.id;
+      const item=items.find(r=>String(r.id)===String(id));
+      if(!item) return;
+      $('#videoModalTitle').textContent=item.title;
+      $('#videoModalBody').innerHTML=`<iframe src="${youtubeEmbedUrl(item.url)}" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+      openModal('#videoModal');
+    });
+  });
+
+  // Wire up the compact audio players — one play/pause button + a slim
+  // progress bar per card, driven by a hidden native <audio> element.
+  $$('.mini-audio').forEach(row=>{
+    const audio=row.querySelector('audio');
+    const btn=row.querySelector('.mini-audio-play');
+    const fill=row.querySelector('.mini-audio-fill');
+    const time=row.querySelector('.mini-audio-time');
+    function fmt(s){ if(!isFinite(s)) return '0:00'; const m=Math.floor(s/60), sec=Math.floor(s%60); return m+':'+String(sec).padStart(2,'0'); }
+    btn.addEventListener('click',()=>{
+      if(audio.paused){
+        $$('.mini-audio audio').forEach(a=>{ if(a!==audio){ a.pause(); } });
+        audio.play();
+      } else {
+        audio.pause();
+      }
+    });
+    audio.addEventListener('play',()=>{ btn.innerHTML=ICON('pause',{size:13}); });
+    audio.addEventListener('pause',()=>{ btn.innerHTML=ICON('play',{size:13}); });
+    audio.addEventListener('timeupdate',()=>{
+      if(audio.duration){ fill.style.width=(audio.currentTime/audio.duration*100)+'%'; }
+      time.textContent=fmt(audio.currentTime||audio.duration||0);
+    });
+    audio.addEventListener('loadedmetadata',()=>{ time.textContent=fmt(audio.duration); });
+    audio.addEventListener('ended',()=>{ btn.innerHTML=ICON('play',{size:13}); fill.style.width='0%'; });
+  });
+}
+
+function cardHTML(r){
+  const isVideo=r.type==='youtube';
+  if(isVideo){
+    const vid=youtubeVideoId(r.url);
+    return `
+      <div class="res-card">
+        <div class="res-card-top"><span class="res-cat-label">VIDEO</span><span class="badge" style="background:rgba(214,69,69,.15);color:#e57373">FREE</span></div>
+        <div class="res-thumb">
+          <div class="stream-video-thumb-inner" data-id="${r.id}">
+            ${vid?`<img class="res-thumb-img" src="https://img.youtube.com/vi/${vid}/hqdefault.jpg" alt="" loading="lazy" onerror="this.remove()">`:''}
+            <span class="stream-play-badge">${ICON('play',{size:16})}</span>
+          </div>
+        </div>
+        <div class="res-title">${escapeHTML(r.title)}</div>
+        <div class="res-meta">${r.programme?`<span>${escapeHTML(r.programme)}</span>`:''}${r.year?`<span>Year ${escapeHTML(String(r.year))}</span>`:''}</div>
+      </div>`;
+  }
+  const badgeLabel=(r.file_type||'AUDIO').toUpperCase();
+  return `
+    <div class="res-card">
+      <div class="res-card-top"><span class="res-cat-label">${escapeHTML(badgeLabel)}</span><span class="badge" style="background:rgba(47,174,107,.15);color:var(--success)">FREE</span></div>
+      <div class="res-thumb"><span class="res-thumb-glyph">${ICON('music',{size:26})}</span></div>
+      <div class="res-title">${escapeHTML(r.title)}</div>
+      <div class="res-meta">${r.programme?`<span>${escapeHTML(r.programme)}</span>`:''}${r.year?`<span>Year ${escapeHTML(String(r.year))}</span>`:''}</div>
+      <div class="mini-audio">
+        <button type="button" class="mini-audio-play" aria-label="Play">${ICON('play',{size:13})}</button>
+        <div class="mini-audio-track"><div class="mini-audio-fill"></div></div>
+        <span class="mini-audio-time">0:00</span>
+        <a class="card-download-btn" href="${escapeHTML(r.url)}" download aria-label="Download audio">${ICON('download',{size:13})}</a>
+        <audio preload="metadata" src="${escapeHTML(r.url)}" style="display:none"></audio>
+      </div>
+    </div>`;
+}
+
+$$('#streamFilterChips .chip').forEach(chip=>{
+  chip.addEventListener('click',()=>{
+    $$('#streamFilterChips .chip').forEach(c=>c.classList.remove('active'));
+    chip.classList.add('active');
+    activeFilter=chip.dataset.filter;
+    renderFeed();
+  });
+});
+
+fetchStreamItems();
+</script>
+</body>
+</html>

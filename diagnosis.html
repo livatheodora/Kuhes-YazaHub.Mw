@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>KUHeS Yaza — E-Diagnosis</title>
+<meta name="theme-color" content="#0a1f44">
+<link rel="icon" href="kuhes.png">
+<link rel="apple-touch-icon" href="kuhes.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+.tip-steps{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:10px;}
+.tip-steps li{color:var(--text);font-size:.88rem;line-height:1.55;}
+</style>
+</head>
+<body data-theme="dark">
+
+<!-- Splash screen -->
+<div class="splash-screen" id="splashScreen">
+  <img class="splash-logo" src="kuhes.png" alt="KUHeS Yaza">
+  <div class="splash-title">E-<em>Diagnosis</em></div>
+  <div class="splash-spinner"></div>
+</div>
+
+<div id="app">
+
+  <header class="topbar">
+    <div class="brand" id="logoBtn">
+      <img src="kuhes.png" alt="KUHeS">
+      <span>KUHeS <em>Yaza</em></span>
+    </div>
+    <div class="top-actions">
+      <a class="icon-btn" href="index.html" aria-label="Back to Yaza">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+      </a>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <section class="hero-card">
+      <img class="hero-watermark" src="kuhes.png" alt="">
+      <div class="hero-top">
+        <div class="hero-titles">
+          <h1><svg class="ui-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 3v6.5a4.5 4.5 0 0 0 9 0V3"/><path d="M9 3H4.5"/><path d="M13.5 3H9"/><path d="M13.5 9.5V13a5 5 0 0 0 10 0v-1.2"/><circle cx="20.5" cy="8.5" r="2"/></svg> E-Diagnosis</h1>
+          <p>Symptom checker &middot; KUHeS Yaza</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="tip-box">
+      <span class="tip-eyebrow">Please note</span>
+      <span>This tool only suggests possibilities based on signs &amp; symptoms admin has recorded. It is not a medical diagnosis — always consult a qualified health worker.</span>
+    </div>
+
+    <h3 class="diag-section-title">🩹 First Aid &amp; Health Tips</h3>
+    <div class="chip-row" id="tipFilterChips">
+      <button class="chip active" data-cat="all">All</button>
+      <button class="chip" data-cat="Emergency">Emergency</button>
+      <button class="chip" data-cat="Common">Common</button>
+      <button class="chip" data-cat="Prevention">Prevention</button>
+    </div>
+    <div class="grid" id="tipsGrid"></div>
+
+    <h3 class="diag-section-title">Select the signs &amp; symptoms you have</h3>
+
+    <div class="search-row">
+      <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input id="symptomSearch" placeholder="Search a symptom e.g. fever, cough, headache...">
+    </div>
+    <div class="muted-text" id="selectedCount" style="margin-bottom:10px;"></div>
+
+    <div class="chip-row wrap" id="symptomChips" style="position:relative;min-height:60px;">
+      <div class="skeleton-row"><div class="skeleton-card" style="height:36px"></div><div class="skeleton-card" style="height:36px"></div></div>
+    </div>
+
+    <button class="primary-btn" id="diagnoseBtn">Diagnose</button>
+
+    <div class="diag-or">or</div>
+
+    <div class="ai-card" id="askAiCard">
+      <div class="ai-card-head"><span class="ai-badge"><svg class="ui-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8V4H8"/><rect x="4" y="8" width="16" height="12" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M9 13v2"/><path d="M15 13v2"/></svg> AI</span><span class="ai-card-title">Ask AI for general possibilities</span></div>
+      <p>Prefer a second opinion, or the app's dataset didn't cover your signs? Describe how you're feeling in your own words and ask an AI for general, non-diagnostic possibilities.</p>
+      <textarea id="aiSymptomInput" class="ai-symptom-input" rows="3" placeholder="e.g. I've had a mild fever and a dry cough since yesterday, plus a headache this morning..."></textarea>
+      <button class="ai-btn" id="askAiDiagBtn">Ask AI</button>
+      <div id="aiDiagResult"></div>
+    </div>
+
+    <div id="diagResults" class="diag-results"></div>
+
+    <h3 class="diag-section-title">🕘 My Symptom Check History</h3>
+    <p class="muted-text" style="margin:-6px 0 10px;">Saved only on this device — never sent anywhere.</p>
+    <div id="historyList"></div>
+    <button class="chip" id="clearHistoryBtn" style="margin-top:2px;">🗑️ Clear history</button>
+
+  </main>
+
+  <!-- First-aid tip detail modal -->
+  <div class="modal-overlay hidden" id="tipModal">
+    <div class="modal">
+      <div class="modal-head"><h3 id="tipModalTitle">Tip</h3><button class="close-btn" data-close>&times;</button></div>
+      <div class="modal-body" id="tipModalBody"></div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="icons.js"></script>
+<script src="diagnosis.js"></script>
+</body>
+</html>
